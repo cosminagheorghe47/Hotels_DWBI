@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+/target/
+/node_modules/
+.env
+*.log
+.idea/
+.vscode/
+src/main/resources/application.properties
