@@ -1,0 +1,18 @@
+package com.example.Hotels_DWBI.dw.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Table(name = "DIM_RESERVATION_STATUS")
+@Data
+public class DimReservationStatus {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "status_key", nullable = false)
+    private Integer statusKey;
+
+    @Column(name = "status_name")
+    private String statusName;
+}
