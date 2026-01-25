@@ -15,21 +15,21 @@ public class DimRoomType {
     @Column(name = "room_type_key", nullable = false)
     private Integer roomTypeKey;
 
-    @Column(name = "room_type_id_oltp")
+    @Column(name = "room_type_id_oltp", nullable = false)
     private Integer roomTypeIdOltp;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "max_adults")
+    @Column(name = "max_adults", nullable = false)
     private Integer maxAdults;
 
-    @Column(name = "max_children")
+    @Column(name = "max_children", nullable = false)
     private Integer maxChildren;
 
-    @Column(name = "base_price_per_night")
+    @Column(name = "base_price_per_night", nullable = false)
     private BigDecimal basePricePerNight;
 
-    @Column(name = "currency")
+    @Column(name = "currency", nullable = false)
     private String currency;
 }

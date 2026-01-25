@@ -13,6 +13,6 @@ public class DimBookingChannel {
     @Column(name = "channel_key", nullable = false)
     private Integer channelKey;
 
-    @Column(name = "channel_name")
+    @Column(name = "channel_name", nullable = false)
     private String channelName;
 }

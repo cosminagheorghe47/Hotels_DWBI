@@ -155,7 +155,7 @@ public class DwPropagationService {
         Review review = reviewRepo.findByReservationReservationId(res.getReservationId()).orElse(null);
         boolean hasReview = review != null;
         Integer reviewRating = hasReview ? review.getRating() : null;
-        boolean hasComment = hasReview && review.getComment() != null && !review.getComment().isEmpty();
+        boolean hasComment = hasReview && review.getCommentReview() != null && !review.getCommentReview().isEmpty();
 
         // --- Pentru fiecare cameră creez un rând fact ---
         List<ReservationRoom> resRooms = reservationRoomRepo.findByReservationReservationId(res.getReservationId());
