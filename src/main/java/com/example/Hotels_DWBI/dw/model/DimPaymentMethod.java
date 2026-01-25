@@ -13,6 +13,6 @@ public class DimPaymentMethod {
     @Column(name = "payment_method_key", nullable = false)
     private Integer paymentMethodKey;
 
-    @Column(name = "method_name")
+    @Column(name = "method_name", nullable = false)
     private String methodName;
 }

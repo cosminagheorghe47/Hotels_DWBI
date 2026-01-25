@@ -22,8 +22,9 @@ public class Review {
     @Column(nullable = false)
     private Integer rating;
 
-    @Column(columnDefinition = "TEXT")
-    private String comment;
+    @Column(name = "comment_review", columnDefinition = "TEXT")
+    @Lob
+    private String commentReview;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

@@ -33,7 +33,7 @@ public class ReviewService {
 
         existing.setReservation(updated.getReservation());
         existing.setRating(updated.getRating());
-        existing.setComment(updated.getComment());
+        existing.setCommentReview(updated.getCommentReview());
         existing.setCreatedAt(updated.getCreatedAt());
 
         return repository.save(existing);

@@ -13,6 +13,6 @@ public class DimReservationStatus {
     @Column(name = "status_key", nullable = false)
     private Integer statusKey;
 
-    @Column(name = "status_name")
+    @Column(name = "status_name", nullable = false)
     private String statusName;
 }

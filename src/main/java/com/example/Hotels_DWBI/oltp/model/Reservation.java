@@ -51,5 +51,6 @@ public class Reservation {
     private LocalDateTime cancelledAt;
 
     @Column(name = "notes")
+    @Lob
     private String notes;
 }
