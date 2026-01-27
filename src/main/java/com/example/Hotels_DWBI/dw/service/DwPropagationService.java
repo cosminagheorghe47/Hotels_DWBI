@@ -1,5 +1,6 @@
 package com.example.Hotels_DWBI.dw.service;
 
+import com.example.Hotels_DWBI.dw.dto.ReservationValidationDto;
 import com.example.Hotels_DWBI.dw.model.*;
 import com.example.Hotels_DWBI.dw.repository.*;
 import com.example.Hotels_DWBI.oltp.model.*;
@@ -8,9 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DwPropagationService {
@@ -116,71 +118,94 @@ public class DwPropagationService {
 
     @Transactional("dwTransactionManager")
     public void propagateReservation(Integer reservationId) {
-        Reservation res = reservationRepo.findById(reservationId).orElseThrow();
 
-        // --- Guest și Hotel ---
-        propagateGuest(res.getGuest().getGuestId());
-        propagateHotel(res.getHotel().getHotelId());
+        Reservation res = reservationRepo.findById(reservationId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Reservation not found: " + reservationId)
+                );
 
         DimGuest guestDw = dimGuestRepo.findByGuestIdOltp(res.getGuest().getGuestId());
         DimHotel hotelDw = dimHotelRepo.findByHotelIdOltp(res.getHotel().getHotelId());
-
-        // --- Booking Channel ---
         DimBookingChannel channelDw = dimBookingChannelRepo.findByChannelName(res.getBookingChannel().name());
-        if (channelDw == null) {
-            channelDw = new DimBookingChannel();
-            channelDw.setChannelName(res.getBookingChannel().name());
-            dimBookingChannelRepo.save(channelDw);
-        }
-
-        // --- Reservation Status ---
         DimReservationStatus statusDw = dimReservationStatusRepo.findByStatusName(res.getStatus().name());
-        if (statusDw == null) {
-            statusDw = new DimReservationStatus();
-            statusDw.setStatusName(res.getStatus().name());
-            dimReservationStatusRepo.save(statusDw);
+
+        DimDate checkInDate  = getDate(res.getCheckInDate());
+        DimDate checkOutDate = getDate(res.getCheckOutDate());
+        DimDate createdDate  = getDate(res.getCreatedAt().toLocalDate());
+
+        int nights = (int) ChronoUnit.DAYS.between(res.getCheckInDate(), res.getCheckOutDate());
+
+        // ===== PAYMENT (SAFE) =====
+
+        Payment payment = paymentRepo
+                .findByReservationReservationId(res.getReservationId())
+                .orElse(null);
+
+        BigDecimal totalPaymentAmount = null;
+        Integer paymentMethodKey = null;
+
+        if (payment != null) {
+            totalPaymentAmount = payment.getAmount();
+
+            if (payment.getMethod() != null) {
+                String methodName = payment.getMethod().name().trim();
+                DimPaymentMethod paymentMethodDw =
+                        dimPaymentMethodRepo.findByMethodName(methodName);
+
+                if (paymentMethodDw != null) {
+                    paymentMethodKey = paymentMethodDw.getPaymentMethodKey();
+                }
+            }
         }
 
-        // --- Date dim ---
-        DimDate checkInDate = getOrCreateDate(res.getCheckInDate());
-        DimDate checkOutDate = getOrCreateDate(res.getCheckOutDate());
-        long nights = ChronoUnit.DAYS.between(res.getCheckInDate(), res.getCheckOutDate());
+        // ===== REVIEW =====
 
-        // --- Payment (unul singur) ---
-        Payment payment = paymentRepo.findByReservationReservationId(res.getReservationId())
-                .orElseThrow();
-        BigDecimal paymentAmount = payment.getAmount();
+        Review review = reviewRepo
+                .findByReservationReservationId(res.getReservationId())
+                .orElse(null);
 
-        // --- Review (unul singur) ---
-        Review review = reviewRepo.findByReservationReservationId(res.getReservationId()).orElse(null);
         boolean hasReview = review != null;
         Integer reviewRating = hasReview ? review.getRating() : null;
-        boolean hasComment = hasReview && review.getCommentReview() != null && !review.getCommentReview().isEmpty();
+        boolean hasComment = hasReview &&
+                review.getCommentReview() != null &&
+                !review.getCommentReview().isBlank();
 
-        // --- Pentru fiecare cameră creez un rând fact ---
-        List<ReservationRoom> resRooms = reservationRoomRepo.findByReservationReservationId(res.getReservationId());
-        for (ReservationRoom resRoom : resRooms) {
-            // Propagare RoomType
-            propagateRoomType(resRoom.getRoom().getRoomType().getRoomTypeId());
-            DimRoomType roomTypeDw = dimRoomTypeRepo.findByRoomTypeIdOltp(resRoom.getRoom().getRoomType().getRoomTypeId());
+        // ===== FACT INSERT =====
 
-            BigDecimal roomAmount = resRoom.getFinalPricePerNight().multiply(BigDecimal.valueOf(nights));
+        List<ReservationRoom> reservationRooms =
+                reservationRoomRepo.findByReservationReservationId(res.getReservationId());
+
+        for (ReservationRoom rr : reservationRooms) {
+
+            DimRoomType roomTypeDw =
+                    dimRoomTypeRepo.findByRoomTypeIdOltp(rr.getRoom().getRoomType().getRoomTypeId());
+
+            BigDecimal roomAmount =
+                    rr.getFinalPricePerNight().multiply(BigDecimal.valueOf(nights));
 
             FactReservationSummary fact = new FactReservationSummary();
+
             fact.setReservationIdOltp(res.getReservationId());
+            fact.setReservationRoomIdOltp(rr.getReservationRoomId());
+
             fact.setHotelKey(hotelDw.getHotelKey());
             fact.setGuestKey(guestDw.getGuestKey());
             fact.setChannelKey(channelDw.getChannelKey());
             fact.setStatusKey(statusDw.getStatusKey());
+            fact.setRoomTypeKey(roomTypeDw.getRoomTypeKey());
+            fact.setPaymentMethodKey(paymentMethodKey);
+
             fact.setCheckInDateKey(checkInDate.getDateKey());
             fact.setCheckOutDateKey(checkOutDate.getDateKey());
-            fact.setCreatedDateKey(checkInDate.getDateKey());
-            fact.setRoomTypeKey(roomTypeDw.getRoomTypeKey());
-            fact.setRoomAmount(roomAmount);
-            fact.setTotalPaymentAmount(paymentAmount);
+            fact.setCreatedDateKey(createdDate.getDateKey());
+
             fact.setAdultsCount(res.getAdultsCount());
             fact.setChildrenCount(res.getChildrenCount());
-            fact.setNightsCount((int) nights);
+            fact.setNightsCount(nights);
+
+            fact.setRoomAmount(roomAmount);
+            fact.setTotalPaymentAmount(totalPaymentAmount);
+
             fact.setHasReview(hasReview ? 1 : 0);
             fact.setReviewRating(reviewRating);
             fact.setHasComment(hasComment ? 1 : 0);
@@ -189,20 +214,91 @@ public class DwPropagationService {
         }
     }
 
+    private DimDate getDate(LocalDate date) {
 
-    private DimDate getOrCreateDate(java.time.LocalDate date) {
-        DimDate dimDate = dimDateRepo.findByFullDate(date);
-        if (dimDate == null) {
-            dimDate = new DimDate();
-            dimDate.setFullDate(date);
-            dimDate.setDayNo(date.getDayOfMonth());
-            dimDate.setMonthNo(date.getMonthValue());
-            dimDate.setMonthName(date.getMonth().name());
-            dimDate.setQuarterNo((date.getMonthValue() - 1) / 3 + 1);
-            dimDate.setYearNo(date.getYear());
-            dimDate.setIsWeekend(date.getDayOfWeek().getValue() >= 6 ? 1 : 0);
-            dimDateRepo.save(dimDate);
-        }
-        return dimDate;
+        int dateKey = date.getYear() * 10000
+                + date.getMonthValue() * 100
+                + date.getDayOfMonth();
+
+        return dimDateRepo.findById(dateKey)
+                .orElseThrow(() ->
+                        new IllegalStateException(
+                                "DIM_DATE lipseste pentru date_key = " + dateKey
+                        )
+                );
     }
+    @Transactional("dwTransactionManager")
+    public ReservationValidationDto validateReservationPropagation(Integer reservationId) {
+
+        Reservation res = reservationRepo.findById(reservationId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Reservation not found: " + reservationId)
+                );
+
+        ReservationValidationDto.OltpSide oltp = new ReservationValidationDto.OltpSide();
+        oltp.setReservationId(res.getReservationId());
+        oltp.setGuestId(res.getGuest().getGuestId());
+        oltp.setHotelId(res.getHotel().getHotelId());
+        oltp.setBookingChannel(res.getBookingChannel().name());
+        oltp.setStatus(res.getStatus().name());
+        oltp.setAdultsCount(res.getAdultsCount());
+        oltp.setChildrenCount(res.getChildrenCount());
+
+        int nights = (int) ChronoUnit.DAYS.between(
+                res.getCheckInDate(),
+                res.getCheckOutDate()
+        );
+        oltp.setNightsCount(nights);
+
+        Payment payment = paymentRepo
+                .findByReservationReservationId(res.getReservationId())
+                .orElse(null);
+
+        if (payment != null) {
+            oltp.setTotalPaymentAmount(payment.getAmount());
+        } else {
+            oltp.setTotalPaymentAmount(null);
+        }
+
+        Review review = reviewRepo
+                .findByReservationReservationId(res.getReservationId())
+                .orElse(null);
+
+        boolean hasReview = review != null;
+        oltp.setHasReview(hasReview);
+
+        List<FactReservationSummary> facts =
+                factReservationRepo.findByReservationIdOltp(reservationId);
+
+        List<ReservationValidationDto.DwFactRow> dwRows = facts.stream().map(f -> {
+            ReservationValidationDto.DwFactRow row = new ReservationValidationDto.DwFactRow();
+            row.setReservationKey(f.getReservationKey());
+            row.setReservationRoomIdOltp(f.getReservationRoomIdOltp());
+            row.setHotelKey(f.getHotelKey());
+            row.setGuestKey(f.getGuestKey());
+            row.setChannelKey(f.getChannelKey());
+            row.setStatusKey(f.getStatusKey());
+            row.setRoomTypeKey(f.getRoomTypeKey());
+            row.setPaymentMethodKey(f.getPaymentMethodKey());
+            row.setCheckInDateKey(f.getCheckInDateKey());
+            row.setCheckOutDateKey(f.getCheckOutDateKey());
+            row.setCreatedDateKey(f.getCreatedDateKey());
+            row.setAdultsCount(f.getAdultsCount());
+            row.setChildrenCount(f.getChildrenCount());
+            row.setNightsCount(f.getNightsCount());
+            row.setRoomAmount(f.getRoomAmount());
+            row.setTotalPaymentAmount(f.getTotalPaymentAmount());
+            row.setHasReview(f.getHasReview());
+            row.setReviewRating(f.getReviewRating());
+            row.setHasComment(f.getHasComment());
+            return row;
+        }).collect(Collectors.toList());
+
+        ReservationValidationDto dto = new ReservationValidationDto();
+        dto.setOltp(oltp);
+        dto.setDwFacts(dwRows);
+
+        return dto;
+    }
+
 }
