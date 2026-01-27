@@ -9,7 +9,6 @@ import lombok.Data;
 public class DimPaymentMethod {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_method_key", nullable = false)
     private Integer paymentMethodKey;
 

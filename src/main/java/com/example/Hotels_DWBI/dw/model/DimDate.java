@@ -11,7 +11,6 @@ import java.time.LocalDate;
 public class DimDate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "date_key", nullable = false)
     private Integer dateKey;
 
