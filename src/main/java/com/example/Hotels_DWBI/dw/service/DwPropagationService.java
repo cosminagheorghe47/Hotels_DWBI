@@ -1,6 +1,9 @@
 package com.example.Hotels_DWBI.dw.service;
 
+import com.example.Hotels_DWBI.dw.dto.GuestValidationDto;
+import com.example.Hotels_DWBI.dw.dto.HotelValidationDto;
 import com.example.Hotels_DWBI.dw.dto.ReservationValidationDto;
+import com.example.Hotels_DWBI.dw.dto.RoomTypeValidationDto;
 import com.example.Hotels_DWBI.dw.model.*;
 import com.example.Hotels_DWBI.dw.repository.*;
 import com.example.Hotels_DWBI.oltp.model.*;
@@ -300,5 +303,106 @@ public class DwPropagationService {
 
         return dto;
     }
+    @Transactional("dwTransactionManager")
+    public GuestValidationDto validateGuest(Integer guestId) {
+
+        Guest g = guestRepo.findById(guestId)
+                .orElseThrow(() -> new IllegalArgumentException("Guest not found"));
+
+        DimGuest dg = dimGuestRepo.findByGuestIdOltp(guestId);
+
+        GuestValidationDto dto = new GuestValidationDto();
+
+        GuestValidationDto.OltpSide oltp = new GuestValidationDto.OltpSide();
+        oltp.setGuestId(g.getGuestId());
+        oltp.setFirstName(g.getFirstName());
+        oltp.setLastName(g.getLastName());
+        oltp.setNationality(g.getNationality());
+        oltp.setBirthDate(g.getBirthDate());
+        oltp.setEmail(g.getEmail());
+        dto.setOltp(oltp);
+
+        if (dg != null) {
+            GuestValidationDto.DwSide dw = new GuestValidationDto.DwSide();
+            dw.setGuestKey(dg.getGuestKey());
+            dw.setGuestIdOltp(dg.getGuestIdOltp());
+            dw.setFirstName(dg.getFirstName());
+            dw.setLastName(dg.getLastName());
+            dw.setNationality(dg.getNationality());
+            dw.setBirthDate(dg.getBirthDate());
+            dw.setEmail(dg.getEmail());
+            dto.setDw(dw);
+        }
+
+        return dto;
+    }
+
+    @Transactional("dwTransactionManager")
+    public HotelValidationDto validateHotel(Integer hotelId) {
+
+        Hotel h = hotelRepo.findById(hotelId)
+                .orElseThrow(() -> new IllegalArgumentException("Hotel not found"));
+
+        DimHotel dh = dimHotelRepo.findByHotelIdOltp(hotelId);
+
+        HotelValidationDto dto = new HotelValidationDto();
+
+        HotelValidationDto.OltpSide oltp = new HotelValidationDto.OltpSide();
+        oltp.setHotelId(h.getHotelId());
+        oltp.setName(h.getName());
+        oltp.setStars(h.getStars());
+        oltp.setCountry(h.getCountry());
+        oltp.setCity(h.getCity());
+        oltp.setAddress(h.getAddress());
+        dto.setOltp(oltp);
+
+        if (dh != null) {
+            HotelValidationDto.DwSide dw = new HotelValidationDto.DwSide();
+            dw.setHotelKey(dh.getHotelKey());
+            dw.setHotelIdOltp(dh.getHotelIdOltp());
+            dw.setName(dh.getName());
+            dw.setStars(dh.getStars());
+            dw.setCountry(dh.getCountry());
+            dw.setCity(dh.getCity());
+            dw.setAddress(dh.getAddress());
+            dto.setDw(dw);
+        }
+
+        return dto;
+    }
+    @Transactional("dwTransactionManager")
+    public RoomTypeValidationDto validateRoomType(Integer roomTypeId) {
+
+        RoomType rt = roomTypeRepo.findById(roomTypeId)
+                .orElseThrow(() -> new IllegalArgumentException("Room type not found"));
+
+        DimRoomType drt = dimRoomTypeRepo.findByRoomTypeIdOltp(roomTypeId);
+
+        RoomTypeValidationDto dto = new RoomTypeValidationDto();
+
+        RoomTypeValidationDto.OltpSide oltp = new RoomTypeValidationDto.OltpSide();
+        oltp.setRoomTypeId(rt.getRoomTypeId());
+        oltp.setName(rt.getName());
+        oltp.setMaxAdults(rt.getMaxAdults());
+        oltp.setMaxChildren(rt.getMaxChildren());
+        oltp.setBasePricePerNight(rt.getBasePricePerNight());
+        oltp.setCurrency(rt.getCurrency());
+        dto.setOltp(oltp);
+
+        if (drt != null) {
+            RoomTypeValidationDto.DwSide dw = new RoomTypeValidationDto.DwSide();
+            dw.setRoomTypeKey(drt.getRoomTypeKey());
+            dw.setRoomTypeIdOltp(drt.getRoomTypeIdOltp());
+            dw.setName(drt.getName());
+            dw.setMaxAdults(drt.getMaxAdults());
+            dw.setMaxChildren(drt.getMaxChildren());
+            dw.setBasePricePerNight(drt.getBasePricePerNight());
+            dw.setCurrency(drt.getCurrency());
+            dto.setDw(dw);
+        }
+
+        return dto;
+    }
+
 
 }

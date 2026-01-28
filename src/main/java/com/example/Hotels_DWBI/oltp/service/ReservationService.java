@@ -3,6 +3,7 @@ package com.example.Hotels_DWBI.oltp.service;
 import com.example.Hotels_DWBI.oltp.model.Reservation;
 import com.example.Hotels_DWBI.oltp.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,12 +25,12 @@ public class ReservationService {
         return reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reservation not found with id " + id));
     }
-
+    @Transactional("oltpTransactionManager")
     public Reservation createReservation(Reservation reservation) {
         reservation.setCreatedAt(LocalDateTime.now());
         return reservationRepository.save(reservation);
     }
-
+    @Transactional("oltpTransactionManager")
     public Reservation updateReservation(Integer id, Reservation updatedReservation) {
         Reservation reservation = getReservationById(id);
 
