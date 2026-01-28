@@ -1,6 +1,9 @@
 package com.example.Hotels_DWBI.dw.controller;
 
+import com.example.Hotels_DWBI.dw.dto.GuestValidationDto;
+import com.example.Hotels_DWBI.dw.dto.HotelValidationDto;
 import com.example.Hotels_DWBI.dw.dto.ReservationValidationDto;
+import com.example.Hotels_DWBI.dw.dto.RoomTypeValidationDto;
 import com.example.Hotels_DWBI.dw.service.DwPropagationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,4 +44,18 @@ public class DwPropagationController {
     @GetMapping("/validate/reservation/{id}")
     public ReservationValidationDto validateReservation(@PathVariable Integer id)
     { return dwService.validateReservationPropagation(id); }
+    @GetMapping("/validate/hotel/{id}")
+    public HotelValidationDto validateHotel(@PathVariable Integer id) {
+        return dwService.validateHotel(id);
+    }
+    @GetMapping("/validate/roomtype/{id}")
+    public RoomTypeValidationDto validateRoomType(@PathVariable Integer id) {
+        return dwService.validateRoomType(id);
+    }
+    @GetMapping("/validate/guest/{id}")
+    public GuestValidationDto validateGuest(@PathVariable Integer id) {
+        return dwService.validateGuest(id);
+    }
+
+
 }
