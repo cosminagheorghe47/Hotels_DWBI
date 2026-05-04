@@ -17,11 +17,11 @@ public class HotelService {
     }
 
     public List<Hotel> getAllHotels() {
-        return hotelRepository.findAll();
+        return hotelRepository.findAllWithCityCountry();
     }
 
     public Hotel getHotelById(Integer id) {
-        return hotelRepository.findById(id)
+        return hotelRepository.findDetailById(id)
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id " + id));
     }
 
@@ -35,8 +35,7 @@ public class HotelService {
 
         hotel.setName(updatedHotel.getName());
         hotel.setStars(updatedHotel.getStars());
-        hotel.setCountry(updatedHotel.getCountry());
-        hotel.setCity(updatedHotel.getCity());
+        hotel.setCityId(updatedHotel.getCityId());
         hotel.setAddress(updatedHotel.getAddress());
         hotel.setPhone(updatedHotel.getPhone());
         hotel.setEmail(updatedHotel.getEmail());

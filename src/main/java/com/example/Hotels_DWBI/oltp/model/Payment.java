@@ -39,4 +39,68 @@ public class Payment {
 
     @Column(name = "transaction_ref")
     private String transactionRef;
+
+    public Integer getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Integer paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public LocalDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(LocalDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public PaymentMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(PaymentMethod method) {
+        this.method = method;
+    }
+
+    public PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
+    }
+
+    public String getTransactionRef() {
+        return transactionRef;
+    }
+
+    public void setTransactionRef(String transactionRef) {
+        this.transactionRef = transactionRef;
+    }
 }

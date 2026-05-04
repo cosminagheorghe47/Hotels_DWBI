@@ -13,10 +13,10 @@ public class JpaRepositoryConfig {
     )
     static class OltpJpaConfig {}
 
-    @EnableJpaRepositories(
-            basePackages = "com.example.Hotels_DWBI.dw.repository",
-            entityManagerFactoryRef = "dwEntityManagerFactory",
-            transactionManagerRef = "dwTransactionManager"
-    )
-    static class DwJpaConfig {}
+//    @EnableJpaRepositories(
+//            basePackages = "com.example.Hotels_DWBI.dw.repository",
+//            entityManagerFactoryRef = "dwEntityManagerFactory",
+//            transactionManagerRef = "dwTransactionManager"
+//    )
+//    static class DwJpaConfig {}
 }

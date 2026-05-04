@@ -32,4 +32,60 @@ public class DimRoomType {
 
     @Column(name = "currency", nullable = false)
     private String currency;
+
+    public Integer getRoomTypeKey() {
+        return roomTypeKey;
+    }
+
+    public void setRoomTypeKey(Integer roomTypeKey) {
+        this.roomTypeKey = roomTypeKey;
+    }
+
+    public Integer getRoomTypeIdOltp() {
+        return roomTypeIdOltp;
+    }
+
+    public void setRoomTypeIdOltp(Integer roomTypeIdOltp) {
+        this.roomTypeIdOltp = roomTypeIdOltp;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getMaxAdults() {
+        return maxAdults;
+    }
+
+    public void setMaxAdults(Integer maxAdults) {
+        this.maxAdults = maxAdults;
+    }
+
+    public Integer getMaxChildren() {
+        return maxChildren;
+    }
+
+    public void setMaxChildren(Integer maxChildren) {
+        this.maxChildren = maxChildren;
+    }
+
+    public BigDecimal getBasePricePerNight() {
+        return basePricePerNight;
+    }
+
+    public void setBasePricePerNight(BigDecimal basePricePerNight) {
+        this.basePricePerNight = basePricePerNight;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 }

@@ -29,4 +29,52 @@ public class RoomType {
 
     @Column(name = "currency", nullable = false)
     private String currency;
+
+    public Integer getRoomTypeId() {
+        return roomTypeId;
+    }
+
+    public void setRoomTypeId(Integer roomTypeId) {
+        this.roomTypeId = roomTypeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getMaxAdults() {
+        return maxAdults;
+    }
+
+    public void setMaxAdults(Integer maxAdults) {
+        this.maxAdults = maxAdults;
+    }
+
+    public Integer getMaxChildren() {
+        return maxChildren;
+    }
+
+    public void setMaxChildren(Integer maxChildren) {
+        this.maxChildren = maxChildren;
+    }
+
+    public BigDecimal getBasePricePerNight() {
+        return basePricePerNight;
+    }
+
+    public void setBasePricePerNight(BigDecimal basePricePerNight) {
+        this.basePricePerNight = basePricePerNight;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 }

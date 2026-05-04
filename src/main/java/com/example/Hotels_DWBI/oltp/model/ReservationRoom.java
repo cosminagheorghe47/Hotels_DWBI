@@ -31,4 +31,52 @@ public class ReservationRoom {
 
     @Column(name = "final_price_per_night")
     private BigDecimal finalPricePerNight;
+
+    public Integer getReservationRoomId() {
+        return reservationRoomId;
+    }
+
+    public void setReservationRoomId(Integer reservationRoomId) {
+        this.reservationRoomId = reservationRoomId;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public BigDecimal getPricePerNight() {
+        return pricePerNight;
+    }
+
+    public void setPricePerNight(BigDecimal pricePerNight) {
+        this.pricePerNight = pricePerNight;
+    }
+
+    public BigDecimal getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(BigDecimal discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public BigDecimal getFinalPricePerNight() {
+        return finalPricePerNight;
+    }
+
+    public void setFinalPricePerNight(BigDecimal finalPricePerNight) {
+        this.finalPricePerNight = finalPricePerNight;
+    }
 }

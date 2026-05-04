@@ -30,4 +30,52 @@ public class Room {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoomStatus status;
+
+    public Integer getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public Integer getFloorNo() {
+        return floorNo;
+    }
+
+    public void setFloorNo(Integer floorNo) {
+        this.floorNo = floorNo;
+    }
+
+    public RoomStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RoomStatus status) {
+        this.status = status;
+    }
 }

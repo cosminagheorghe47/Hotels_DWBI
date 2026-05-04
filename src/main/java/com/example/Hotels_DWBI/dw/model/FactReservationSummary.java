@@ -74,4 +74,172 @@ public class FactReservationSummary {
 
     @Column(name = "has_comment", nullable = false)
     private Integer hasComment;
+
+    public Integer getReservationKey() {
+        return reservationKey;
+    }
+
+    public void setReservationKey(Integer reservationKey) {
+        this.reservationKey = reservationKey;
+    }
+
+    public Integer getReservationIdOltp() {
+        return reservationIdOltp;
+    }
+
+    public void setReservationIdOltp(Integer reservationIdOltp) {
+        this.reservationIdOltp = reservationIdOltp;
+    }
+
+    public Integer getReservationRoomIdOltp() {
+        return reservationRoomIdOltp;
+    }
+
+    public void setReservationRoomIdOltp(Integer reservationRoomIdOltp) {
+        this.reservationRoomIdOltp = reservationRoomIdOltp;
+    }
+
+    public Integer getHotelKey() {
+        return hotelKey;
+    }
+
+    public void setHotelKey(Integer hotelKey) {
+        this.hotelKey = hotelKey;
+    }
+
+    public Integer getGuestKey() {
+        return guestKey;
+    }
+
+    public void setGuestKey(Integer guestKey) {
+        this.guestKey = guestKey;
+    }
+
+    public Integer getChannelKey() {
+        return channelKey;
+    }
+
+    public void setChannelKey(Integer channelKey) {
+        this.channelKey = channelKey;
+    }
+
+    public Integer getStatusKey() {
+        return statusKey;
+    }
+
+    public void setStatusKey(Integer statusKey) {
+        this.statusKey = statusKey;
+    }
+
+    public Integer getCheckInDateKey() {
+        return checkInDateKey;
+    }
+
+    public void setCheckInDateKey(Integer checkInDateKey) {
+        this.checkInDateKey = checkInDateKey;
+    }
+
+    public Integer getCheckOutDateKey() {
+        return checkOutDateKey;
+    }
+
+    public void setCheckOutDateKey(Integer checkOutDateKey) {
+        this.checkOutDateKey = checkOutDateKey;
+    }
+
+    public Integer getCreatedDateKey() {
+        return createdDateKey;
+    }
+
+    public void setCreatedDateKey(Integer createdDateKey) {
+        this.createdDateKey = createdDateKey;
+    }
+
+    public Integer getRoomTypeKey() {
+        return roomTypeKey;
+    }
+
+    public void setRoomTypeKey(Integer roomTypeKey) {
+        this.roomTypeKey = roomTypeKey;
+    }
+
+    public Integer getPaymentMethodKey() {
+        return paymentMethodKey;
+    }
+
+    public void setPaymentMethodKey(Integer paymentMethodKey) {
+        this.paymentMethodKey = paymentMethodKey;
+    }
+
+    public Integer getAdultsCount() {
+        return adultsCount;
+    }
+
+    public void setAdultsCount(Integer adultsCount) {
+        this.adultsCount = adultsCount;
+    }
+
+    public Integer getChildrenCount() {
+        return childrenCount;
+    }
+
+    public void setChildrenCount(Integer childrenCount) {
+        this.childrenCount = childrenCount;
+    }
+
+    public Integer getNightsCount() {
+        return nightsCount;
+    }
+
+    public void setNightsCount(Integer nightsCount) {
+        this.nightsCount = nightsCount;
+    }
+
+    public BigDecimal getRoomAmount() {
+        return roomAmount;
+    }
+
+    public void setRoomAmount(BigDecimal roomAmount) {
+        this.roomAmount = roomAmount;
+    }
+
+    public BigDecimal getTotalServiceAmount() {
+        return totalServiceAmount;
+    }
+
+    public void setTotalServiceAmount(BigDecimal totalServiceAmount) {
+        this.totalServiceAmount = totalServiceAmount;
+    }
+
+    public BigDecimal getTotalPaymentAmount() {
+        return totalPaymentAmount;
+    }
+
+    public void setTotalPaymentAmount(BigDecimal totalPaymentAmount) {
+        this.totalPaymentAmount = totalPaymentAmount;
+    }
+
+    public Integer getHasReview() {
+        return hasReview;
+    }
+
+    public void setHasReview(Integer hasReview) {
+        this.hasReview = hasReview;
+    }
+
+    public Integer getReviewRating() {
+        return reviewRating;
+    }
+
+    public void setReviewRating(Integer reviewRating) {
+        this.reviewRating = reviewRating;
+    }
+
+    public Integer getHasComment() {
+        return hasComment;
+    }
+
+    public void setHasComment(Integer hasComment) {
+        this.hasComment = hasComment;
+    }
 }

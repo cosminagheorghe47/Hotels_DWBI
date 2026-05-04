@@ -14,4 +14,20 @@ public class DimPaymentMethod {
 
     @Column(name = "method_name", nullable = false)
     private String methodName;
+
+    public Integer getPaymentMethodKey() {
+        return paymentMethodKey;
+    }
+
+    public void setPaymentMethodKey(Integer paymentMethodKey) {
+        this.paymentMethodKey = paymentMethodKey;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
 }

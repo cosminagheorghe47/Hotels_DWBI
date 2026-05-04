@@ -31,4 +31,52 @@ public class ReservationService {
 
     @Column(name = "line_total")
     private BigDecimal lineTotal;
+
+    public Integer getReservationServiceId() {
+        return reservationServiceId;
+    }
+
+    public void setReservationServiceId(Integer reservationServiceId) {
+        this.reservationServiceId = reservationServiceId;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getUnitPriceAtBooking() {
+        return unitPriceAtBooking;
+    }
+
+    public void setUnitPriceAtBooking(BigDecimal unitPriceAtBooking) {
+        this.unitPriceAtBooking = unitPriceAtBooking;
+    }
+
+    public BigDecimal getLineTotal() {
+        return lineTotal;
+    }
+
+    public void setLineTotal(BigDecimal lineTotal) {
+        this.lineTotal = lineTotal;
+    }
 }

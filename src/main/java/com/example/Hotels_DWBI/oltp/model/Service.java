@@ -1,13 +1,11 @@
 package com.example.Hotels_DWBI.oltp.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "SERVICES")
-@Data
 public class Service {
 
     @Id
@@ -18,9 +16,8 @@ public class Service {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
-    private ServiceCategory category;
+    @Column(name = "category", nullable = false, length = 20)
+    private String category;
 
     @Column(name = "unit_price", nullable = false)
     private BigDecimal unitPrice;
@@ -30,4 +27,52 @@ public class Service {
 
     @Column(name = "is_active")
     private Integer isActive;
+
+    public Integer getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Integer serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public Integer getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Integer isActive) {
+        this.isActive = isActive;
+    }
 }

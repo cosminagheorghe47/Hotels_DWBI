@@ -15,4 +15,20 @@ public class DimReservationStatus {
 
     @Column(name = "status_name", nullable = false)
     private String statusName;
+
+    public Integer getStatusKey() {
+        return statusKey;
+    }
+
+    public void setStatusKey(Integer statusKey) {
+        this.statusKey = statusKey;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
 }

@@ -15,4 +15,20 @@ public class DimBookingChannel {
 
     @Column(name = "channel_name", nullable = false)
     private String channelName;
+
+    public Integer getChannelKey() {
+        return channelKey;
+    }
+
+    public void setChannelKey(Integer channelKey) {
+        this.channelKey = channelKey;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
 }

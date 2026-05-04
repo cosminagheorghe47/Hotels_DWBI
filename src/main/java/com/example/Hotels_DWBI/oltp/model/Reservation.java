@@ -50,7 +50,102 @@ public class Reservation {
     @Column(name = "cancelled_at")
     private LocalDateTime cancelledAt;
 
-    @Column(name = "notes")
-    @Lob
+    @Column(name = "notes", length = 255)
     private String notes;
+
+    public Integer getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+
+    public Integer getAdultsCount() {
+        return adultsCount;
+    }
+
+    public void setAdultsCount(Integer adultsCount) {
+        this.adultsCount = adultsCount;
+    }
+
+    public Integer getChildrenCount() {
+        return childrenCount;
+    }
+
+    public void setChildrenCount(Integer childrenCount) {
+        this.childrenCount = childrenCount;
+    }
+
+    public BookingChannel getBookingChannel() {
+        return bookingChannel;
+    }
+
+    public void setBookingChannel(BookingChannel bookingChannel) {
+        this.bookingChannel = bookingChannel;
+    }
+
+    public ReservationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ReservationStatus status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getCancelledAt() {
+        return cancelledAt;
+    }
+
+    public void setCancelledAt(LocalDateTime cancelledAt) {
+        this.cancelledAt = cancelledAt;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }
