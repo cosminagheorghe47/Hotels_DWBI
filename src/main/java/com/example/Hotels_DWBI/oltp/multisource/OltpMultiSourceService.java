@@ -27,7 +27,7 @@ public class OltpMultiSourceService {
 
     private static final String READ_ONLY_GLOBAL_SOURCE = "oltp-user";
 
-    /** Path/query entity name → Oracle table name (same schema assumed for all OLTP DBs). */
+    /** Path/query entity name → Oracle table name for mutable shard users. */
     private static final Map<String, String> ENTITY_TABLE = Map.ofEntries(
             Map.entry("guests", "GUESTS"),
             Map.entry("countries", "COUNTRIES"),
@@ -37,10 +37,23 @@ public class OltpMultiSourceService {
             Map.entry("room-types", "ROOM_TYPES"),
             Map.entry("reservations", "RESERVATIONS"),
             Map.entry("payments", "PAYMENTS"),
-            Map.entry("services", "SERVICES"),
             Map.entry("reviews", "REVIEWS"),
             Map.entry("reservation-rooms", "RESERVATION_ROOMS"),
             Map.entry("reservation-services", "RESERVATION_SERVICES")
+    );
+
+    private static final Map<String, String> SG_READ_VIEW = Map.ofEntries(
+            Map.entry("guests", "V_GUESTS_GLOBAL"),
+            Map.entry("countries", "V_COUNTRIES_GLOBAL"),
+            Map.entry("cities", "V_CITIES_GLOBAL"),
+            Map.entry("hotels", "V_HOTELS_GLOBAL"),
+            Map.entry("rooms", "V_ROOMS_GLOBAL"),
+            Map.entry("room-types", "V_ROOM_TYPES_REMOTE"),
+            Map.entry("reservations", "V_RESERVATIONS_GLOBAL"),
+            Map.entry("payments", "V_PAYMENTS_GLOBAL"),
+            Map.entry("reviews", "V_REVIEWS_GLOBAL"),
+            Map.entry("reservation-rooms", "V_RESERVATION_ROOMS_GLOBAL"),
+            Map.entry("reservation-services", "V_RESERVATION_SERVICES_GLOBAL")
     );
 
     private final Map<String, JdbcTemplate> jdbcBySource;
@@ -70,7 +83,7 @@ public class OltpMultiSourceService {
                 "oltp-ue-s2", oltpUeS2DataSource
         );
         this.usernameBySource = Map.of(
-                "oltp-user", "oltp_user",
+                "oltp-user", "sg",
                 "oltp-s3", "s3",
                 "oltp-ue-s1", "s1",
                 "oltp-ue-s2", "s2"
@@ -195,7 +208,13 @@ public class OltpMultiSourceService {
             return null;
         }
         String normalizedEntity = entity.toLowerCase(Locale.ROOT);
-        if ("guests".equals(normalizedEntity) && !READ_ONLY_GLOBAL_SOURCE.equals(sourceKey.toLowerCase(Locale.ROOT))) {
+        String normalizedSource = sourceKey == null ? "" : sourceKey.toLowerCase(Locale.ROOT);
+        if (READ_ONLY_GLOBAL_SOURCE.equals(normalizedSource)
+                || "sg".equals(normalizedSource)
+                || "oltp_user".equals(normalizedSource)) {
+            return SG_READ_VIEW.getOrDefault(normalizedEntity, ENTITY_TABLE.get(normalizedEntity));
+        }
+        if ("guests".equals(normalizedEntity)) {
             return "GUESTS_DATA";
         }
         return ENTITY_TABLE.get(normalizedEntity);

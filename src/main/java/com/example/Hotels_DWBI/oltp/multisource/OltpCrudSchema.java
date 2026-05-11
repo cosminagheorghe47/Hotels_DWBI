@@ -48,8 +48,6 @@ public final class OltpCrudSchema {
         m.put("payments", new EntitySpec("PAYMENTS", "PAYMENT_ID", List.of(
                 "RESERVATION_ID", "PAYMENT_DATE", "AMOUNT", "CURRENCY",
                 "METHOD", "STATUS", "TRANSACTION_REF")));
-        m.put("services", new EntitySpec("SERVICES", "SERVICE_ID", List.of(
-                "NAME", "CATEGORY", "UNIT_PRICE", "CURRENCY", "IS_ACTIVE")));
         m.put("reviews", new EntitySpec("REVIEWS", "REVIEW_ID", List.of(
                 "RESERVATION_ID", "RATING", "COMMENT_REVIEW", "CREATED_AT")));
         m.put("reservation-rooms", new EntitySpec("RESERVATION_ROOMS", "RESERVATION_ROOM_ID", List.of(
