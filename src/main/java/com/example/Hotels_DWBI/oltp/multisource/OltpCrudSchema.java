@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Coloane CRUD pentru explorator; trebuie aliniat la {@link OltpMultiSourceService} (alias → tabel).
- */
+
 public final class OltpCrudSchema {
 
     public record EntitySpec(

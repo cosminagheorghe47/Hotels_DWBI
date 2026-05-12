@@ -36,10 +36,6 @@ public class OltpMultiSourceController {
         return multiSourceService.listEntityAliases();
     }
 
-    /**
-     * Trebuie să fie o rută literală, nu sub /{sourceKey}, altfel „schema” e tratat ca sourceKey
-     * și lipsește query {@code entity} → HTTP 400.
-     */
     @GetMapping("/schema")
     public Map<String, Object> getCrudSchema() {
         return multiSourceService.getCrudSchema();

@@ -27,7 +27,6 @@ public class OltpMultiSourceService {
 
     private static final String READ_ONLY_GLOBAL_SOURCE = "oltp-user";
 
-    /** Path/query entity name → Oracle table name for mutable shard users. */
     private static final Map<String, String> ENTITY_TABLE = Map.ofEntries(
             Map.entry("guests", "GUESTS"),
             Map.entry("countries", "COUNTRIES"),
@@ -104,7 +103,6 @@ public class OltpMultiSourceService {
                 .collect(Collectors.toList());
     }
 
-    /** Schema pentru formularul CRUD din explorator (trebuie să existe GET dedicat, nu doar /{sourceKey}). */
     public Map<String, Object> getCrudSchema() {
         Map<String, Object> out = new LinkedHashMap<>();
         for (Map.Entry<String, OltpCrudSchema.EntitySpec> e : OltpCrudSchema.all().entrySet()) {
@@ -119,7 +117,6 @@ public class OltpMultiSourceService {
         return out;
     }
 
-    /** Available entity keys for dropdowns (e.g. guests, room-types). */
     public Map<String, String> listEntityAliases() {
         return Collections.unmodifiableMap(ENTITY_TABLE);
     }
@@ -248,7 +245,7 @@ public class OltpMultiSourceService {
         }
         if (!isNumericColumn(spec.pkColumn(), columnTypes)) {
             throw new IllegalArgumentException(
-                    "Cheia primară " + spec.pkColumn() + " trebuie trimisă pentru " + spec.table()
+                    "Cheia primara " + spec.pkColumn() + " trebuie trimisa pentru " + spec.table()
             );
         }
 
@@ -263,7 +260,7 @@ public class OltpMultiSourceService {
                 BigDecimal.class
         );
         if (nextId == null) {
-            throw new IllegalArgumentException("Nu s-a putut genera cheia primară pentru " + table + ".");
+            throw new IllegalArgumentException("Nu s-a putut genera cheia primara pentru " + table + ".");
         }
         return nextId;
     }
@@ -285,7 +282,7 @@ public class OltpMultiSourceService {
             Map<String, String> columnTypes
     ) {
         if (body == null || body.isEmpty()) {
-            throw new IllegalArgumentException("Nu există valori pentru salvare.");
+            throw new IllegalArgumentException("Nu exista valori pentru salvare");
         }
 
         Map<String, String> allowedColumns = new HashMap<>();
@@ -322,7 +319,7 @@ public class OltpMultiSourceService {
         }
 
         if (columns.isEmpty()) {
-            throw new IllegalArgumentException("Nu există valori valide pentru salvare.");
+            throw new IllegalArgumentException("Nu exista valori valide pentru salvare");
         }
         return new PreparedValues(columns, values);
     }
@@ -357,7 +354,7 @@ public class OltpMultiSourceService {
             }
             return text;
         } catch (NumberFormatException | DateTimeParseException ex) {
-            throw new IllegalArgumentException("Valoare invalidă pentru coloana " + column + ": " + text);
+            throw new IllegalArgumentException("Valoare invalida pentru coloana " + column + ": " + text);
         }
     }
 

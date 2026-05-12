@@ -1,6 +1,5 @@
 package com.example.Hotels_DWBI.oltp.multisource;
 
-/** Metadata for one OLTP connection (user / JDBC URL). */
 public class OltpSourceInfo {
 
     private final String key;
